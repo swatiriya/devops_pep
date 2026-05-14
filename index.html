@@ -2,21 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Quote Generator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luminary — Daily Quotes</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <div class="container">
-    <h1>Quote Generator</h1>
+  <div class="grain-overlay"></div>
+  <div class="bg-glow"></div>
 
-    <div class="quote-box">
-      <p id="quote">Click button for a quote</p>
+  <header class="site-header">
+    <div class="logo">LUMINARY</div>
+    <div class="header-rule"></div>
+    <div class="tagline">Words That Illuminate</div>
+  </header>
+
+  <main class="main-container">
+
+    <div class="quote-card" id="quoteWrapper">
+      <div class="quote-index" id="quoteNumber">01</div>
+
+      <div class="quote-block">
+        <div class="open-mark">&ldquo;</div>
+        <p class="quote-text" id="quoteText">
+          The only way to do great work is to love what you do.
+        </p>
+      </div>
+
+      <div class="quote-meta">
+        <div class="rule-short"></div>
+        <p class="quote-author" id="quoteAuthor">Steve Jobs</p>
+        <p class="quote-category" id="quoteCategory">Passion &amp; Purpose</p>
+      </div>
     </div>
 
-    <button onclick="generateQuote()">New Quote</button>
-  </div>
+    <div class="controls">
+      <button class="btn-generate" id="generateBtn" onclick="generateQuote()">
+        <span class="btn-inner">
+          <span class="btn-label">Inspire Me</span>
+          <span class="btn-arrow">→</span>
+        </span>
+      </button>
+
+      <div class="icon-buttons">
+        <button class="btn-icon" id="copyBtn" onclick="copyQuote()" title="Copy">
+          ⎘
+        </button>
+        <button class="btn-icon" id="shareBtn" onclick="shareQuote()" title="Share">
+          ↗
+        </button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">✓ Copied to clipboard</div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-rule"></span>
+      <span class="footer-text">A curated collection of timeless wisdom</span>
+      <span class="footer-rule"></span>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>

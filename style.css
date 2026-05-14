@@ -1,32 +1,380 @@
-body {
+/* ─── Reset & Base ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial;
-  background: #121212;
-  color: white;
+}
+
+:root {
+  --bg:          #0d0b09;
+  --card:        #1a1714;
+  --border:      rgba(212, 165, 90, 0.18);
+  --amber:       #d4a55a;
+  --amber-light: #f0c97a;
+  --amber-dim:   rgba(212, 165, 90, 0.08);
+  --cream:       #f5edd8;
+  --cream-dim:   rgba(245, 237, 216, 0.55);
+  --cream-muted: rgba(245, 237, 216, 0.28);
+  --text-sub:    rgba(240, 230, 204, 0.5);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Cormorant Garamond', Georgia, serif;
+  --font-mono:    'DM Mono', monospace;
+  --transition:   0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { font-size: 16px; }
+
+body {
+  background-color: var(--bg);
+  color: var(--cream);
+  font-family: var(--font-body);
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 
-.container {
+/* ─── Grain Overlay ─────────────────────────────────────────────── */
+.grain-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ─── Background Glow ───────────────────────────────────────────── */
+.bg-glow {
+  pointer-events: none;
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse at center, rgba(212, 165, 90, 0.07) 0%, transparent 70%);
+  z-index: 0;
+}
+
+/* ─── Header ────────────────────────────────────────────────────── */
+.site-header {
+  position: relative;
+  z-index: 1;
   text-align: center;
+  padding: 3.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: fadeDown 0.9s ease both;
 }
 
-.quote-box {
-  background: #1e1e1e;
-  padding: 30px;
-  border-radius: 10px;
-  margin: 20px 0;
-  width: 400px;
+.logo {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.45em;
+  color: var(--amber);
 }
 
-button {
-  padding: 12px 20px;
-  border: none;
-  background: #00adb5;
-  color: white;
-  border-radius: 5px;
+.header-rule {
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--amber), transparent);
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--cream-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ─── Main ──────────────────────────────────────────────────────── */
+.main-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+  padding: 1.5rem 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  flex: 1;
+}
+
+/* ─── Quote Card ────────────────────────────────────────────────── */
+.quote-card {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 3rem 3.5rem 2.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  box-shadow:
+    0 1px 0 rgba(212, 165, 90, 0.10) inset,
+    0 40px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0,0,0,0.4);
+  animation: fadeUp 1s 0.2s ease both;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.quote-card.transitioning {
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+}
+
+/* Corner accents */
+.quote-card::before,
+.quote-card::after {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--amber);
+  border-style: solid;
+  opacity: 0.45;
+}
+.quote-card::before { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+.quote-card::after  { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+
+/* ─── Quote Index ───────────────────────────────────────────────── */
+.quote-index {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  color: var(--amber);
+  opacity: 0.6;
+}
+
+/* ─── Quote Block ───────────────────────────────────────────────── */
+.quote-block { position: relative; }
+
+.open-mark {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  line-height: 0.55;
+  color: var(--amber);
+  opacity: 0.2;
+  display: block;
+  margin-bottom: 0.65rem;
+  margin-left: -0.25rem;
+  user-select: none;
+}
+
+.quote-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.72rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--cream);
+  letter-spacing: 0.01em;
+}
+
+/* ─── Quote Meta ────────────────────────────────────────────────── */
+.quote-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.rule-short {
+  width: 32px;
+  height: 1px;
+  background: var(--amber);
+  opacity: 0.5;
+  margin-bottom: 0.3rem;
+}
+
+.quote-author {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--amber-light);
+  letter-spacing: 0.04em;
+}
+
+.quote-category {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-sub);
+}
+
+/* ─── Controls ──────────────────────────────────────────────────── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeUp 1s 0.4s ease both;
+}
+
+/* Generate Button */
+.btn-generate {
+  background: transparent;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+  transition: color 0.35s, box-shadow 0.35s;
+}
+
+.btn-generate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-generate:hover::before { transform: scaleX(1); }
+.btn-generate:hover {
+  color: var(--bg);
+  box-shadow: 0 0 30px rgba(212, 165, 90, 0.25);
+}
+.btn-generate:active { transform: scale(0.97); }
+
+.btn-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1.75rem;
+}
+
+.btn-arrow {
+  font-size: 1.05rem;
+  transition: transform 0.3s;
+}
+.btn-generate:hover .btn-arrow { transform: translateX(3px); }
+
+/* Icon Buttons */
+.icon-buttons { display: flex; gap: 0.5rem; }
+
+.btn-icon {
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--cream-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.15s;
+}
+
+.btn-icon:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+.btn-icon:active { transform: scale(0.92); }
+
+/* ─── Toast ─────────────────────────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--amber);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.4rem;
+  border-radius: 1px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 200;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ─── Footer ────────────────────────────────────────────────────── */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem 2rem 2.5rem;
+  width: 100%;
+  max-width: 680px;
+  animation: fadeUp 1s 0.6s ease both;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.footer-rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border));
+}
+.footer-rule:last-child {
+  background: linear-gradient(to left, transparent, var(--border));
+}
+
+.footer-text {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-sub);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────────────── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .quote-card { padding: 2.25rem 1.75rem 2rem; }
+
+  .controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-generate { width: 100%; }
+  .btn-inner { justify-content: center; }
+  .icon-buttons { justify-content: center; }
 }
